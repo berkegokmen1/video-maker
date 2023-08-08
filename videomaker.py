@@ -1,8 +1,10 @@
 import cv2
 import os
 
-def create_transitioned_video(image_folder, output_path, transition_duration=20, image_duration=150):
-    image_files = sorted([f for f in os.listdir(image_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg'))])
+from options import VideoMakerOptions
+
+def create_transitioned_video(image_folder, output_path, transition_duration=20, image_duration=100):
+    image_files = sorted([f.lower() for f in os.listdir(image_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg'))])
     image_paths = [os.path.join(image_folder, img) for img in image_files]
 
     frame_height, frame_width = cv2.imread(image_paths[0]).shape[:2]
@@ -21,10 +23,9 @@ def create_transitioned_video(image_folder, output_path, transition_duration=20,
         for _ in range(image_duration):
             out.write(img2)
 
+        print(f"Processed to video: {image_files[i]}")
+
     out.release()
 
 if __name__ == "__main__":
-    image_folder = "img/"
-    output_video = "output_video.mp4"
-    
-    create_transitioned_video(image_folder, output_video)
+    create_transitioned_video(VideoMakerOptions.IMAGE_FOLDER, VideoMakerOptions.OUTPUT_VIDEO)
